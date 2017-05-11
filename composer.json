@@ -1,0 +1,18 @@
+{
+    "name": "unimatrix/cake",
+    "description": "Utilities for Cake 3.4",
+    "type": "cakephp-plugin",
+    "homepage": "http://venture.unimatrix.ro",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0.0",
+        "cakephp/cakephp": ">=3.4",
+        "tubalmartin/cssmin": "~3.1",
+        "mtdowling/cron-expression":"~1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Unimatrix\\Cake\\": "src"
+        }
+    }
+}
