@@ -1,6 +1,6 @@
 {
     "name": "unimatrix/cake",
-    "description": "Utilities for Cake 3.4",
+    "description": "Utilities for CakePHP 3.4",
     "type": "cakephp-plugin",
     "homepage": "http://venture.unimatrix.ro",
     "license": "MIT",
