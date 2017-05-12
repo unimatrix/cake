@@ -56,7 +56,7 @@ use Unimatrix\Cake\Lib\Misc;
  * $this->Email->debug('New subscriber', $this->request->data['email'], true, false);
  *
  * @author Flavius
- * @version 0.1
+ * @version 0.2
  */
 class EmailComponent extends Component
 {
@@ -87,16 +87,13 @@ class EmailComponent extends Component
         $subject = $data['subject'] ?? $email->getSubject();
         $email->setSubject(trim($config == 'debug' ? $brand . ' report: ' . $subject : $subject . ' - ' . $brand));
 
-        // get controller
-        $ctrl = $this->getController();
-
         // set template variables
         $email->setViewVars([
             'subject' => $subject,
             'brand' => $brand,
             'form' => $data['form'] ?? [],
             'info' => [
-                'ip' => $ctrl->request->clientIP(),
+                'ip' => $this->getController()->request->clientIP(),
                 'useragent' => env('HTTP_USER_AGENT'),
                 'date' => strftime('%d.%m.%Y %H:%M')
             ]

@@ -23,18 +23,12 @@ use RuntimeException;
  * }
  *
  * @author Flavius
- * @version 0.1
+ * @version 0.2
  */
 class CaptchaComponent extends Component
 {
     // the verification endpoint
     protected $_api = 'https://www.google.com/recaptcha/api/siteverify';
-
-    /**
-     * Holds the controller
-     * @var \Cake\Controller\Controller
-     */
-    protected $_Ctrl;
 
     /**
      * Verify captcha
@@ -47,8 +41,7 @@ class CaptchaComponent extends Component
         if(!$secret)
             throw new RuntimeException("Captcha Component: Error in configuration, secret key not found");
 
-        // get controller & 'g-recaptcha-response'
-        $this->_Ctrl = $this->getController();
+        // get g-recaptcha-response
         $recaptcha = $this->requestRecaptcha();
         if($recaptcha) {
             // perform the request to google
@@ -56,7 +49,7 @@ class CaptchaComponent extends Component
             $response = $http->post($this->_api, [
                 'secret' => $secret,
                 'response' => $recaptcha,
-                'remoteip' => $this->_Ctrl->request->clientIP()
+                'remoteip' => $this->getController()->request->clientIP()
             ]);
 
             // got expected json response?
@@ -76,7 +69,7 @@ class CaptchaComponent extends Component
      */
     private function requestRecaptcha() {
         $return = false;
-        $request = $this->_Ctrl->request;
+        $request = $this->getController()->request;
         if($request->is('post')) {
             $body = $request->getParsedBody();
             if(is_array($body)) {
@@ -92,7 +85,7 @@ class CaptchaComponent extends Component
 
                 // request changed, overwrite request
                 if($dirty)
-                    $this->_Ctrl->request = $request->withParsedBody($body);
+                    $this->getController()->request = $request->withParsedBody($body);
             }
         }
 

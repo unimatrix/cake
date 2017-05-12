@@ -47,7 +47,7 @@ use Unimatrix\Cake\Lib\Min\Minify_HTML as HTML;
  * ");
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -62,6 +62,9 @@ class MinifyHelper extends Helper {
     // container for css and js files
     private $css = ['intern' => [], 'extern' => []];
     private $js = ['intern' => [], 'extern' => []];
+
+    // keep a reference to avoid duplicates
+    private $inline = ['css' => [], 'js' => []];
 
     // compress flag
     private $compress = false;
@@ -86,10 +89,10 @@ class MinifyHelper extends Helper {
      */
      public function afterLayout() {
          // run through algorithm
-         $compressed = $this->_html($this->_View->Blocks->get('content'));
+         $compressed = $this->_html($this->getView()->Blocks->get('content'));
 
          // set html content
-         $this->_View->Blocks->set('content', $compressed);
+         $this->getView()->Blocks->set('content', $compressed);
      }
 
     /**
@@ -398,6 +401,12 @@ class MinifyHelper extends Helper {
         // compress
         $data = Algorithms::css($data);
 
+        // keep a reference to avoid duplicates
+        $hash = md5($data);
+        if(in_array($hash, $this->inline['css']))
+            return false;
+        else $this->inline['css'][] = $hash;
+
         // output
         return "<style>{$data}</style>";
     }
@@ -413,6 +422,12 @@ class MinifyHelper extends Helper {
 
         // compress
         $data = Algorithms::js($data);
+
+        // keep a reference to avoid duplicates
+        $hash = md5($data);
+        if(in_array($hash, $this->inline['js']))
+            return false;
+        else $this->inline['js'][] = $hash;
 
         // output
         return "<script>{$data}</script>";
