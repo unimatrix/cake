@@ -7,7 +7,7 @@ namespace Unimatrix\Cake\Lib;
  * Contains text functions for romanian characters
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class Lexicon {
     // regex syntax used (case insensitive, unicode)

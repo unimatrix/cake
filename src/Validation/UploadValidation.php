@@ -9,7 +9,7 @@ use Cake\Utility\Hash;
  * Validate upload errors, used in UploadableBehavior
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class UploadValidation
 {

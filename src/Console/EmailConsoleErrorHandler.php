@@ -24,7 +24,7 @@ use Exception;
  * use Unimatrix\Cake\Console\EmailConsoleErrorHandler;
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class EmailConsoleErrorHandler extends ConsoleErrorHandler
 {

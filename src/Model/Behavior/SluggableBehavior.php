@@ -34,7 +34,7 @@ use Cake\Utility\Text;
  * $this->Users->find('slug', ['your-slug-here']);
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class SluggableBehavior extends Behavior
 {

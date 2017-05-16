@@ -20,7 +20,7 @@ use Cake\View\Helper;
  * $this->Number->precision($this->Debug->requestTime() * 1000, 0)
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class DebugHelper extends Helper
 {

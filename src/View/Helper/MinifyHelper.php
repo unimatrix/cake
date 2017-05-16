@@ -8,9 +8,28 @@ use Cake\View\Helper;
 use Cake\View\View;
 use Cake\Utility\Inflector;
 use Cake\Core\Exception\Exception;
-use tubalmartin\CssMin\Minifier as CSS;
-use Unimatrix\Cake\Lib\Min\Minifier as JS;
-use Unimatrix\Cake\Lib\Min\Minify_HTML as HTML;
+use MatthiasMullie\Minify\CSS;
+use MatthiasMullie\Minify\JS;
+use voku\helper\HtmlMin;
+
+// Minify libraries used
+class Algorithms
+{
+    public static function css($input = null) {
+        return trim((new CSS($input))->minify());
+    }
+
+    public static function js($input = null) {
+        return trim((new JS($input))->minify());
+    }
+
+    public static function html($input = null) {
+        $min = new HtmlMin();
+        $min->doRemoveDefaultAttributes(false);
+
+        return trim($min->minify($input));
+    }
+}
 
 /**
  * Minify
@@ -47,7 +66,7 @@ use Unimatrix\Cake\Lib\Min\Minify_HTML as HTML;
  * ");
  *
  * @author Flavius
- * @version 1.1
+ * @version 1.2
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -293,8 +312,13 @@ class MinifyHelper extends Helper {
             $contents = file_get_contents($file);
 
             // not compressed? run through algorithms
-            if(strpos($file, ".min.{$what}") === false)
+            if(strpos($file, ".min.{$what}") === false) {
                 $contents = Algorithms::$what($contents);
+
+                // add script delimiter if js
+                if($what == 'js')
+                    $contents .= ";";
+            }
 
             // add to output
             $output .= "\n" . $contents . "\n";
@@ -432,21 +456,4 @@ class MinifyHelper extends Helper {
         // output
         return "<script>{$data}</script>";
     }
-}
-
-/**
- * Setup Algorithms
- */
-class Algorithms {
-   public static function css($input = null) {
-       return trim((new CSS())->run($input));
-   }
-
-   public static function js($input = null) {
-       return trim(JS::minify($input));
-   }
-
-   public static function html($input = null) {
-       return trim(HTML::minify($input));
-   }
 }

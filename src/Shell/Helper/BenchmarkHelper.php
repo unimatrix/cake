@@ -32,7 +32,7 @@ use Cake\Console\Helper;
  * ----------------------------------------------------------------
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class BenchmarkHelper extends Helper
 {

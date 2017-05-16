@@ -38,7 +38,7 @@ use ArrayObject;
  *     ->allowEmpty('file', 'update');
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class UploadableBehavior extends Behavior
 {

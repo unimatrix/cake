@@ -15,7 +15,7 @@ use Cake\Core\Configure;
  * Note2: is implemented in bootstrap (added to middleware automatically)
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class EmailErrorHandlerMiddleware extends ErrorHandlerMiddleware
 {

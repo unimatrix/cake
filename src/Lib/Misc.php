@@ -10,7 +10,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  * Contains helper functions
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class Misc {
     /**

@@ -56,7 +56,7 @@ use Unimatrix\Cake\Lib\Misc;
  * $this->Email->debug('New subscriber', $this->request->data['email'], true, false);
  *
  * @author Flavius
- * @version 0.2
+ * @version 1.1
  */
 class EmailComponent extends Component
 {

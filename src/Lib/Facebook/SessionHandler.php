@@ -22,7 +22,7 @@ use Facebook\PersistentData\PersistentDataInterface;
  * ]);
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class SessionHandler implements PersistentDataInterface
 {

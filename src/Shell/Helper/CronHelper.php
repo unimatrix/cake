@@ -27,7 +27,7 @@ use Cron\CronExpression;
  *
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class CronHelper extends Helper
 {

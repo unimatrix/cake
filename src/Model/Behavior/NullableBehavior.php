@@ -16,7 +16,7 @@ use Cake\ORM\Entity;
  * $this->addBehavior('Unimatrix/Cake.Nullable');
  *
  * @author Flavius
- * @version 0.1
+ * @version 1.0
  */
 class NullableBehavior extends Behavior
 {
