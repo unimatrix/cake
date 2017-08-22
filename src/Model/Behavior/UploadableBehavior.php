@@ -63,7 +63,7 @@ class UploadableBehavior extends Behavior
 
         // go through each field and change the column type to our file type
         foreach($this->_config['fields'] as $field => $path)
-            $schema->columnType($field, 'unimatrix.file');
+            $schema->setColumnType($field, 'unimatrix.file');
 
         // update schema
         $this->_table->setSchema($schema);
