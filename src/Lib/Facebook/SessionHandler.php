@@ -31,10 +31,18 @@ class SessionHandler implements PersistentDataInterface
         $this->session = $session;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Facebook\PersistentData\PersistentDataInterface::get()
+     */
     public function get($key) {
         return $this->session->consume("Facebook.{$key}");
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Facebook\PersistentData\PersistentDataInterface::set()
+     */
     public function set($key, $value) {
         $this->session->write("Facebook.{$key}", $value);
     }

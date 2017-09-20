@@ -11,6 +11,8 @@ use Cake\Core\Configure;
 /**
  * Email Error Handler Middleware
  * Send a debug email for each website exception
+ *
+ * Important: Make sure you remove your ErrorHandlerMiddleware from your Application
  * Note: Only works on live environments (debug = false)
  * Note2: is implemented in bootstrap (added to middleware automatically)
  *
