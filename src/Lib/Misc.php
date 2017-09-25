@@ -2,19 +2,32 @@
 
 namespace Unimatrix\Cake\Lib;
 
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\HtmlDumper;
-
 /**
  * Helpers
  * Contains helper functions
  *
  * @author Flavius
- * @version 1.0
+ * @version 2.0
  */
 class Misc {
+    // pre style
+    public static $pre = [
+        'font-family: monospace',  'white-space: pre', 'margin: 1em',
+        'clear: both', 'background: #F5F5F5', 'border: 1px solid brown',
+        'padding: 10px', 'position: relative', 'z-index: 9999',
+        'font-size: 13px', 'line-height: 16px', 'text-align: left',
+        'text-shadow: none', 'color: #000'
+    ];
+
+    // title style
+    public static $title = [
+        'color: brown', 'font-family: Verdana', 'font-size: 16px',
+        'display: block', 'padding-bottom: 2px', 'margin-bottom: 10px',
+        'border-bottom: 1px solid brown'
+    ];
+
     /**
-     * Wrapper for symphony's dumper,
+     * Makes the debug pretty for output
      * also adds the option to place a title :)
      *
      * @param unknown $var
@@ -22,26 +35,21 @@ class Misc {
      * @param bool $return
      */
     public static function dump($var, $title = false, $return = false) {
-        // init symfony classes
-        $cloner = new VarCloner();
-        $dumper = new HtmlDumper();
+        // capture on return
+        if($return)
+            ob_start();
 
-        // got title?
-        $h1 = null;
-        if($title) {
-            $style = implode(';', [
-                'font: bold 25px/30px Tahoma', 'color: #e0115f',
-                'border-bottom: 2px solid #e0115f', 'background: #18171B',
-                'margin: 0px 0px -12px 0px', 'padding: 5px'
-            ]);
-            $h1 = "<h1 style='{$style}'>{$title}</h1>";
-        }
+        // start pre, got title?
+        echo '<pre style="'. implode(';', self::$pre) .'">';
+        if($title)
+            echo '<span style="'. implode(';', self::$title) .'">'. $title .'</span>';
 
-        // dumper
-        $dumper = $h1 . $dumper->dump($cloner->cloneVar($var), true);
+        // do the deed and end pre
+        var_dump($var);
+        echo "</pre>";
 
-        // return or output
-        if($return) return $dumper;
-        else echo $dumper;
+        // return output
+        if($return)
+            return ob_get_clean();
     }
 }

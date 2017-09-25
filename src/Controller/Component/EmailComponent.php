@@ -156,8 +156,6 @@ class EmailComponent extends Component
 
         // body start
         $body = $body == strip_tags($body) ? nl2br($body) : $body;
-        if(strpos($body, 'sf-dump-') == false && ($request || $server))
-            $body .= '<br /><br /><hr />';
 
         // show request
         if($request) {
