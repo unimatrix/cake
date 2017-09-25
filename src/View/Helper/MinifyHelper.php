@@ -10,7 +10,7 @@ use Cake\Utility\Inflector;
 use Cake\Core\Exception\Exception;
 use MatthiasMullie\Minify\CSS;
 use MatthiasMullie\Minify\JS;
-use voku\helper\HtmlMin;
+use voku\helper\HtmlMin as HTML;
 
 // Minify libraries used
 class Algorithms
@@ -24,10 +24,7 @@ class Algorithms
     }
 
     public static function html($input = null) {
-        $min = new HtmlMin();
-        $min->doRemoveDefaultAttributes(false);
-
-        return trim($min->minify($input));
+        return trim((new HTML())->minify($input));
     }
 }
 
@@ -66,7 +63,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.2
+ * @version 1.3
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
