@@ -15,7 +15,7 @@ use Exception;
  * Send a debug email for each fatal error or exception thrown
  * Note: Only works on live environments (debug = false)
  *
- * Usage exmaple (in bootstrap)
+ * Usage exmaple (in config/bootstrap.php)
  * ----------------------------------------------------------------
  * search for -> (new ConsoleErrorHandler(Configure::read('Error')))->register();
  * replace with -> (new EmailConsoleErrorHandler(Configure::read('Error')))->register();
