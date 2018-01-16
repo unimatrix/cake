@@ -99,6 +99,23 @@ class CronHelper extends Helper
 	}
 
 	/**
+	 * Get a particular job by msg
+	 * @param system $msg
+	 * @return boolean|array
+	 */
+	public function getJob($msg) {
+	    $found = false;
+        foreach($this->jobs as $job) {
+            if($job['msg'] === $msg) {
+                $found = $job;
+                break;
+            }
+        }
+
+        return $found;
+	}
+
+	/**
 	 * Load the cron jobs to run and execute them.
 	 * @return int Number of runned tasks
 	 */
