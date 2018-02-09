@@ -287,10 +287,13 @@ class MinifyHelper extends Helper {
 
     /**
      * Transform relative paths (../) to absolute ones
+     * - also fix unimatrix css paths for cake instalations in subdirectories
+     *
      * @param string $input
      * @return string
      */
     private function absolute($input = null) {
+        $input = str_replace('/unimatrix/', '../unimatrix/', $input);
         return preg_replace('/(\.\.\/)+/i', $this->Url->build('/', true), $input);
     }
 
