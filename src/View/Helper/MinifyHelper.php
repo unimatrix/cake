@@ -72,7 +72,7 @@ class MinifyHelper extends Helper {
     // load html and url helpers
     public $helpers = ['Html', 'Url'];
 
-    // default conf
+    // default config
     protected $_defaultConfig = [
         'css' => ['path' => '/cache-css'], // without trailing slash
         'js' => ['path' => '/cache-js'] // without trailing slash
