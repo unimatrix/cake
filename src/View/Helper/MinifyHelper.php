@@ -39,11 +39,18 @@ class Algorithms
  * Load:
  * ---------------------------------------------------
  * This helper must be loaded in your View/AppView.php
- * before you can use it
+ * before you can use it. Default values below:
  *
  * $this->loadHelper('Unimatrix/Cake.Minify', [
- *     'css' => ['path' => '/cache-css'], // WWW_ROOT + this path without trailing slash
- *     'js' => ['path' => '/cache-js'] // WWW_ROOT + this path without trailing slash
+ *     'compress' => [
+ *         'html' => true,
+ *         'css' => true,
+ *         'js' => true
+ *     ],
+ *     'paths' => [
+ *         'css' => '/cache-css',
+ *         'js' => '/cache-js'
+ *     ]
  * ]);
  *
  * Usage:
@@ -66,7 +73,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.3
+ * @version 1.4
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -74,16 +81,34 @@ class MinifyHelper extends Helper {
 
     // default config
     protected $_defaultConfig = [
-        'css' => ['path' => '/cache-css'], // without trailing slash
-        'js' => ['path' => '/cache-js'] // without trailing slash
+        'compress' => [
+            'html' => true,
+            'css' => true,
+            'js' => true
+        ],
+        'paths' => [
+            'css' => '/cache-css',
+            'js' => '/cache-js'
+        ]
     ];
 
     // container for css and js files
-    private $css = ['intern' => [], 'extern' => []];
-    private $js = ['intern' => [], 'extern' => []];
+    private $css = [
+        'full' => null,
+        'intern' => [],
+        'extern' => []
+    ];
+    private $js = [
+        'full' => null,
+        'intern' => [],
+        'extern' => []
+    ];
 
     // keep a reference to avoid duplicates
-    private $inline = ['css' => [], 'js' => []];
+    private $inline = [
+        'css' => [],
+        'js' => []
+    ];
 
     // compress flag
     private $compress = false;
@@ -97,9 +122,13 @@ class MinifyHelper extends Helper {
         // call parent constructor
         parent::__construct($View, $config);
 
-        // calculate file system route
-        $this->_config['css']['route'] = rtrim(WWW_ROOT, DS) . str_replace('/', DS, $this->_config['css']['path']);
-        $this->_config['js']['route'] = rtrim(WWW_ROOT, DS) . str_replace('/', DS, $this->_config['js']['path']);
+        // fix trailing slash
+        $this->_config['paths']['css'] = rtrim($this->_config['paths']['css'], '/');
+        $this->_config['paths']['js'] = rtrim($this->_config['paths']['js'], '/');
+
+        // calculate full system path
+        $this->css['full'] = rtrim(Configure::read('App.wwwRoot'), DS) . str_replace('/', DS, $this->_config['paths']['css']);
+        $this->js['full'] = rtrim(Configure::read('App.wwwRoot'), DS) . str_replace('/', DS, $this->_config['paths']['js']);
     }
 
     /**
@@ -240,7 +269,7 @@ class MinifyHelper extends Helper {
         $fullpath = preg_replace('/^' . preg_quote($this->request->getAttribute('webroot'), '/') . '/', '', urldecode($base));
 
         // do webroot path
-        $webrootPath = WWW_ROOT . str_replace('/', DS, $fullpath);
+        $webrootPath = Configure::read('App.wwwRoot') . str_replace('/', DS, $fullpath);
         if(file_exists($webrootPath))
             return $webrootPath;
 
@@ -344,14 +373,9 @@ class MinifyHelper extends Helper {
      * @return string
      */
     private function _html($content) {
-        // got a script to be parsed at the end?
-        if(preg_match_all('#<scriptend>(.*?)</scriptend>#s', $content, $matches)) {
-            $content = preg_replace('#<scriptend>.*?</scriptend>#s', null, $content); // strip that from html
-            $content = str_replace('</body>', $this->_inline_script(implode(null, $matches[1])) . '</body>', $content); // add it before body closes
-        }
-
         // compress?
-        $content = Algorithms::html($content);
+        if($this->_config['compress']['html'])
+            $content = Algorithms::html($content);
 
         // return content
         return $content;
@@ -363,11 +387,11 @@ class MinifyHelper extends Helper {
      */
     private function _style() {
         // we need to compress?
-        if($this->compress) {
+        if($this->compress && $this->_config['compress']['css']) {
             // get paths
             $cache = $this->filename('css');
-            $web_path = $this->_config['css']['path'] . '/' . $cache;
-            $system_path = $this->_config['css']['route'] . DS . $cache;
+            $web_path = $this->_config['paths']['css'] . '/' . $cache;
+            $system_path = $this->css['full'] . DS . $cache;
 
             // no cache file? write it
             if(!file_exists($system_path)) {
@@ -391,11 +415,11 @@ class MinifyHelper extends Helper {
      */
     private function _script() {
         // we need to compress?
-        if($this->compress) {
+        if($this->compress && $this->_config['compress']['js']) {
             // get paths
             $cache = $this->filename('js');
-            $web_path = $this->_config['js']['path'] . '/' . $cache;
-            $system_path = $this->_config['js']['route'] . DS . $cache;
+            $web_path = $this->_config['paths']['js'] . '/' . $cache;
+            $system_path = $this->js['full'] . DS . $cache;
 
             // no cache file? write it
             if(!file_exists($system_path)) {
@@ -414,7 +438,7 @@ class MinifyHelper extends Helper {
     }
 
     /**
-     * Return the combined css data either compressed or not (depending on the setting)
+     * Return the compressed inline css data
      * @param string $data
      */
     private function _inline_style($data = null) {
@@ -439,7 +463,7 @@ class MinifyHelper extends Helper {
     }
 
     /**
-     * Return the combined js data either compressed or not (depending on the setting)
+     * Return the compressed inline js data
      * @param string $data
      */
     private function _inline_script($data = null) {
