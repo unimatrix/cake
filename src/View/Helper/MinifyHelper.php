@@ -51,7 +51,7 @@ class Algorithms
  *         'js' => true
  *     ],
  *     'config' => [
- *         'html' => [
+ *         'html' => [ // see voku/HtmlMin for options
  *             'doRemoveOmittedHtmlTags' => false
  *         ],
  *         'css' => [],
@@ -95,6 +95,11 @@ class MinifyHelper extends Helper {
             'html' => true,
             'css' => true,
             'js' => true
+        ],
+        'config' => [
+            'html' => [],
+            'css' => [],
+            'js' => []
         ],
         'paths' => [
             'css' => '/cache-css',
