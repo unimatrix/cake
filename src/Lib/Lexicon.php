@@ -29,8 +29,9 @@ class Lexicon {
      * Highlight word
      * @param string $text
      * @param string|array $phrase
+     * @param bool $html
      */
-    public static function highlight($text, $phrase) {
+    public static function highlight($text, $phrase, $html = false) {
         if(empty($phrase))
             return $text;
 
@@ -40,7 +41,11 @@ class Lexicon {
         foreach($phrase as $idx => $one)
             $phrase[$idx] = self::regex($one);
 
-        return preg_replace(sprintf(self::$re, implode('|', $phrase)), '<span class="highlight">\1</span>', $text);
+        $phrase = implode('|', $phrase);
+        if($html)
+            $phrase = "(?![^<]+>){$phrase}(?![^<]+>)";
+
+        return preg_replace(sprintf(self::$re, $phrase), '<span class="highlight">\1</span>', $text);
     }
 
     /**

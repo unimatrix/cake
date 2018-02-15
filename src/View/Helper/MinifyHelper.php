@@ -24,10 +24,7 @@ class Algorithms
     }
 
     public static function html($input = null) {
-        $html = new HTML();
-        $html->doRemoveSpacesBetweenTags(true);
-
-        return trim($html->minify($input));
+        return trim((new HTML())->minify($input));
     }
 }
 
