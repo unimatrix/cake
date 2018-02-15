@@ -15,16 +15,22 @@ use voku\helper\HtmlMin as HTML;
 // Minify libraries used
 class Algorithms
 {
-    public static function css($input = null) {
-        return trim((new CSS($input))->minify());
+    public static function css($input = null, array $options = []) {
+        $css = new CSS($input);
+        return trim($css->minify());
     }
 
-    public static function js($input = null) {
-        return trim((new JS($input))->minify());
+    public static function js($input = null, array $options = []) {
+        $js = new JS($input);
+        return trim($js->minify());
     }
 
-    public static function html($input = null) {
-        return trim((new HTML())->minify($input));
+    public static function html($input = null, array $options = []) {
+        $html = new HTML();
+        foreach($options as $option => $value)
+            $html->$option($value);
+
+        return trim($html->minify($input));
     }
 }
 
@@ -43,6 +49,13 @@ class Algorithms
  *         'html' => true,
  *         'css' => true,
  *         'js' => true
+ *     ],
+ *     'config' => [
+ *         'html' => [
+ *             'doRemoveOmittedHtmlTags' => false
+ *         ],
+ *         'css' => [],
+ *         'js' => []
  *     ],
  *     'paths' => [
  *         'css' => '/cache-css',
@@ -70,7 +83,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.4
+ * @version 1.5
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -342,7 +355,7 @@ class MinifyHelper extends Helper {
 
             // not compressed? run through algorithms
             if(strpos($file, ".min.{$what}") === false) {
-                $contents = Algorithms::$what($contents);
+                $contents = Algorithms::$what($contents, $this->_config['config'][$what]);
 
                 // add script delimiter if js
                 if($what == 'js')
@@ -372,7 +385,7 @@ class MinifyHelper extends Helper {
     private function _html($content) {
         // compress?
         if($this->_config['compress']['html'])
-            $content = Algorithms::html($content);
+            $content = Algorithms::html($content, $this->_config['config']['html']);
 
         // return content
         return $content;
@@ -447,7 +460,7 @@ class MinifyHelper extends Helper {
         $data = $this->absolute($data);
 
         // compress
-        $data = Algorithms::css($data);
+        $data = Algorithms::css($data, $this->_config['config']['css']);
 
         // keep a reference to avoid duplicates
         $hash = md5($data);
@@ -469,7 +482,7 @@ class MinifyHelper extends Helper {
             return false;
 
         // compress
-        $data = Algorithms::js($data);
+        $data = Algorithms::js($data, $this->_config['config']['js']);
 
         // keep a reference to avoid duplicates
         $hash = md5($data);
