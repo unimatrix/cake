@@ -10,6 +10,7 @@ use Cake\Utility\Inflector;
 use Cake\Core\Exception\Exception;
 use MatthiasMullie\Minify\CSS;
 use MatthiasMullie\Minify\JS;
+use MatthiasMullie\PathConverter\Converter;
 use voku\helper\HtmlMin as HTML;
 
 // Minify libraries used
@@ -83,7 +84,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.5
+ * @version 1.6
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -209,7 +210,7 @@ class MinifyHelper extends Helper {
             throw new Exception("{$what} not supported");
 
         // call private function
-        $function = '_inline_' . $what;
+        $function = '_inline' . ucfirst($what);
         $data = $this->$function($data);
 
         // return or output?
@@ -330,18 +331,6 @@ class MinifyHelper extends Helper {
     }
 
     /**
-     * Transform relative paths (../) to absolute ones
-     * - also fix unimatrix css paths for cake instalations in subdirectories
-     *
-     * @param string $input
-     * @return string
-     */
-    private function absolute($input = null) {
-        $input = str_replace('/unimatrix/', '../unimatrix/', $input);
-        return preg_replace('/(\.\.\/)+/i', $this->Url->build('/', true), $input);
-    }
-
-    /**
      * Take individual files and process them based on an algorithm
      * @param string $what js | css
      * @throws Exception
@@ -354,9 +343,13 @@ class MinifyHelper extends Helper {
 
         // go through each file
         $output = null;
-        foreach($this->$what['intern'] as $file) {
+        foreach($this->$what['intern'] as $idx => $file) {
             // get file contents
             $contents = file_get_contents($file);
+
+            // css? fix paths
+            if($what == 'css')
+                $contents = $this->dilemma($contents, $this->$what['extern'][$idx]);
 
             // not compressed? run through algorithms
             if(strpos($file, ".min.{$what}") === false) {
@@ -374,12 +367,93 @@ class MinifyHelper extends Helper {
         // strip newlines
         $output = preg_replace('#(\r\n?|\n){2,}#', "\n", $output);
 
-        // css? replace relative paths to absolute paths
-        if($what == 'css')
-            $output = $this->absolute($output);
-
         // return the compressed string
         return trim($output);
+    }
+
+    /**
+     * Dilemma?
+     * This function uses morph to fix and convert paths found in css
+     *
+     * @param string $input
+     * @return string
+     */
+    private function dilemma($input = null, $from = false) {
+        // calculate from and to
+        list($plugin, $from) = $this->_View->pluginSplit($from, false);
+        $from = Configure::read('App.cssBaseUrl') . $from;
+        if(isset($plugin))
+            $from = Inflector::underscore($plugin) . '/' . $from;
+
+        // start converter
+        $converter = new Converter("/{$from}-fake-file.css", "{$this->_config['paths']['css']}/cache-fake-file.css");
+
+        // fix paths
+        return $this->morph($input, function($url) use($converter) {
+            return $converter->convert($url);
+        });
+    }
+
+    /**
+     * Morph
+     * The function that detects urls and morphs paths accordingly
+     *
+     * @param string $input
+     * @param callable $callback
+     * @param string $ignore
+     * @return mixed
+     */
+    private function morph($input, callable $callback, $ignore = '/^(data:|https?:|\\/)/') {
+        // define regex
+        $relativeRegexes = [
+            '/url\(\s*(?P<quotes>["\'])?(?P<path>.+?)(?(quotes)(?P=quotes))\s*\)/ix',
+            '/@import\s+(?P<quotes>["\'])(?P<path>.+?)(?P=quotes)/ix',
+        ];
+
+        // find all relative urls in css
+        $matches = [];
+        foreach($relativeRegexes as $relativeRegex)
+            if(preg_match_all($relativeRegex, $input, $regexMatches, PREG_SET_ORDER))
+                $matches = array_merge($matches, $regexMatches);
+
+        // start empty
+        $search = [];
+        $replace = [];
+
+        // loop all urls
+        foreach ($matches as $match) {
+            // determine if it's a url() or an @import match
+            $type = (strpos($match[0], '@import') === 0 ? 'import' : 'url');
+            $url = $match['path'];
+
+            // ignore transformation?
+            if(preg_match($ignore, $url) === 0) {
+                // attempting to interpret GET-params makes no sense, so let's discard them for awhile
+                $params = strrchr($url, '?');
+                $url = $params ? substr($url, 0, -strlen($params)) : $url;
+
+                // fix relative url
+                $url = $callback($url);
+
+                // now that the path has been converted, re-apply GET-params
+                $url .= $params;
+            }
+
+            // urls with control characters above 0x7e should be quoted.
+            $url = trim($url);
+            if(preg_match('/[\s\)\'"#\x{7f}-\x{9f}]/u', $url))
+                $url = $match['quotes'] . $url . $match['quotes'];
+
+            // build replacement
+            $search[] = $match[0];
+            if($type === 'url')
+                $replace[] = 'url('.$url.')';
+            elseif($type === 'import')
+                $replace[] = '@import "'.$url.'"';
+        }
+
+        // return replaced input
+        return str_replace($search, $replace, $input);
     }
 
     /**
@@ -456,13 +530,15 @@ class MinifyHelper extends Helper {
      * Return the compressed inline css data
      * @param string $data
      */
-    private function _inline_style($data = null) {
+    private function _inlineStyle($data = null) {
         // no data?
         if(is_null($data))
             return false;
 
-        // replace relative paths to absolute paths
-        $data = $this->absolute($data);
+        // fix paths
+        $data = $this->morph($data, function($url) {
+            return $this->Url->build($url);
+        }, '/^(data:|https?:)/');
 
         // compress
         $data = Algorithms::css($data, $this->_config['config']['css']);
@@ -481,7 +557,7 @@ class MinifyHelper extends Helper {
      * Return the compressed inline js data
      * @param string $data
      */
-    private function _inline_script($data = null) {
+    private function _inlineScript($data = null) {
         // no data?
         if(is_null($data))
             return false;
