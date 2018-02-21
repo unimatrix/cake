@@ -78,31 +78,37 @@ class BenchmarkHelper extends Helper
      */
     public function output($args = null) {
         // calculate stuff
-        $delta_T = ($this->stop - $this->start);
-        $day = round(($delta_T % 604800) / 86400);
-        $hours = round((($delta_T % 604800) % 86400) / 3600);
-        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60);
-        $sec = round((((($delta_T % 604800) % 86400) % 3600) % 60));
+        $delta = ($this->stop - $this->start);        
+        $days = round(($delta % 604800) / 86400);
+        $hours = round((($delta % 604800) % 86400) / 3600);
+        $minutes = round(((($delta % 604800) % 86400) % 3600) / 60);
+        $seconds = round((((($delta % 604800) % 86400) % 3600) % 60));
 
         // output stuff
         $msg = [];
-        if($day > 0) $msg[] = $this->pluralize($day, 'day');
-        if($hours > 0) $msg[] = $this->pluralize($hours, 'hour');
-        if($minutes > 0) $msg[] = $this->pluralize($minutes, 'minute');
-        $msg[] = $this->pluralize($sec, 'second');
+        if($days > 0) $msg[] = $this->plural($days, 'd');
+        if($hours > 0) $msg[] = $this->plural($hours, 'h');
+        if($minutes > 0) $msg[] = $this->plural($minutes, 'm');
+        $msg[] = $this->plural($seconds);
 
         // return stuff
-        return $this->str_lreplace(',', ' and', implode(', ', $msg));
+        return $this->str_lreplace(',', ' ' . __d('Unimatrix/cake', 'and'), implode(', ', $msg));
     }
 
     /**
-     * Pluralize function
-     * @param int $count
-     * @param string $text
+     * Translate time
+     * @param int $c
+     * @param string $o
      * @return string
      */
-    private function pluralize($count, $text) {
-        return $count . (($count == 1) ? (" $text") : (" {$text}s"));
+    private function plural($c, $o = 's') {
+        $type = $o;
+        if($o == 'd') $type = $c == 1 ? __d('Unimatrix/cake', 'day') : __d('Unimatrix/cake', 'days');
+        if($o == 'h') $type = $c == 1 ? __d('Unimatrix/cake', 'hour') : __d('Unimatrix/cake', 'hours');
+        if($o == 'm') $type = $c == 1 ? __d('Unimatrix/cake', 'minute') : __d('Unimatrix/cake', 'minutes');
+        if($o == 's') $type = $c == 1 ? __d('Unimatrix/cake', 'second') : __d('Unimatrix/cake', 'seconds');
+
+        return $c . ' ' . $type;
     }
 
     /**

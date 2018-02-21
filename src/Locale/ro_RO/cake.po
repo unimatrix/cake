@@ -1,0 +1,72 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2018-02-21 15:43+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /Model/Behavior/UploadableBehavior.php:87;88
+msgid "This file is too large"
+msgstr "Acest fișier este prea mare"
+
+#: /Model/Behavior/UploadableBehavior.php:89
+msgid "This file was only partially uploaded"
+msgstr "Acest fișier a fost doar parțial uploadat"
+
+#: /Model/Behavior/UploadableBehavior.php:90
+msgid "Missing a temporary folder"
+msgstr "Lipseste folderul temporar"
+
+#: /Model/Behavior/UploadableBehavior.php:91
+msgid "Failed to write file to disk"
+msgstr "Eșuare la scrierea fișierului pe disc"
+
+#: /Model/Behavior/UploadableBehavior.php:92
+msgid "Upload was stopped by extension"
+msgstr "Uploadul a fost oprit de extensie"
+
+#: /Shell/Helper/BenchmarkHelper.php:95
+msgid "and"
+msgstr "și"
+
+#: /Shell/Helper/BenchmarkHelper.php:106
+msgid "day"
+msgstr "zi"
+
+#: /Shell/Helper/BenchmarkHelper.php:106
+msgid "days"
+msgstr "zile"
+
+#: /Shell/Helper/BenchmarkHelper.php:107
+msgid "hour"
+msgstr "oră"
+
+#: /Shell/Helper/BenchmarkHelper.php:107
+msgid "hours"
+msgstr "ore"
+
+#: /Shell/Helper/BenchmarkHelper.php:108
+msgid "minute"
+msgstr "minut"
+
+#: /Shell/Helper/BenchmarkHelper.php:108
+msgid "minutes"
+msgstr "minute"
+
+#: /Shell/Helper/BenchmarkHelper.php:109
+msgid "second"
+msgstr "secundă"
+
+#: /Shell/Helper/BenchmarkHelper.php:109
+msgid "seconds"
+msgstr "secunde"
+

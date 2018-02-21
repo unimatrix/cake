@@ -84,12 +84,12 @@ class UploadableBehavior extends Behavior
         foreach($this->_config['fields'] as $field => $path) {
             // add validators
             $validator->add($field, [
-                'isUnderPhpSizeLimit' => ['rule' => 'isUnderPhpSizeLimit', 'provider' => 'upload', 'message' => 'This file is too large'],
-                'isUnderFormSizeLimit' => ['rule' => 'isUnderFormSizeLimit', 'provider' => 'upload', 'message' => 'This file is too large'],
-                'isCompletedUpload' => ['rule' => 'isCompletedUpload', 'provider' => 'upload', 'message' => 'This file was only partially uploaded'],
-                'isTemporaryDirectory' => ['rule' => 'isTemporaryDirectory', 'provider' => 'upload', 'message' => 'Missing a temporary folder'],
-                'isSuccessfulWrite' => ['rule' => 'isSuccessfulWrite', 'provider' => 'upload', 'message' => 'Failed to write file to disk'],
-                'isNotStoppedByExtension' => ['rule' => 'isNotStoppedByExtension', 'provider' => 'upload', 'message' => 'Upload was stopped by extension'],
+                'isUnderPhpSizeLimit' => ['rule' => 'isUnderPhpSizeLimit', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'This file is too large')],
+                'isUnderFormSizeLimit' => ['rule' => 'isUnderFormSizeLimit', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'This file is too large')],
+                'isCompletedUpload' => ['rule' => 'isCompletedUpload', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'This file was only partially uploaded')],
+                'isTemporaryDirectory' => ['rule' => 'isTemporaryDirectory', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'Missing a temporary folder')],
+                'isSuccessfulWrite' => ['rule' => 'isSuccessfulWrite', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'Failed to write file to disk')],
+                'isNotStoppedByExtension' => ['rule' => 'isNotStoppedByExtension', 'provider' => 'upload', 'message' => __d('Unimatrix/cake', 'Upload was stopped by extension')],
             ]);
 
             // empty allowed? && no file uploaded? unset field
