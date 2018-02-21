@@ -43,7 +43,7 @@ class CronHelper extends Helper
 
     /**
      * Load the cron jobs that should be runned and register them into the
-	 * jobs array.
+     * jobs array.
      */
     public function addJob($job = []) {
         if(!isset($job['msg']))
@@ -56,55 +56,55 @@ class CronHelper extends Helper
             throw new RuntimeException('Job without a function');
 
         if($this->isDue($job['schedule']))
-			$this->jobs[] = $job;
+            $this->jobs[] = $job;
     }
 
-	/**
-	 * Check if a cron job should be run.
-	 * The expression could be any cron expression or a predefined value:
-	 * - @yearly
-	 * - @annually
-	 * - @monthly
-	 * - @weekly
-	 * - @daily
-	 * - @hourly
-	 * ------------------------------
-	 *   *    *    *    *    *    *
-	 *   -    -    -    -    -    -
-	 *   |    |    |    |    |    |
-	 *   |    |    |    |    |    + year [optional]
-	 *   |    |    |    |    +----- day of week (0 - 7) (Sunday=0 or 7)
-	 *   |    |    |    +---------- month (1 - 12)
-	 *   |    |    +--------------- day of month (1 - 31)
-	 *   |    +-------------------- hour (0 - 23)
-	 *   +------------------------- min (0 - 59)
-	 *
-	 * @param string $expr The cron expression
-	 * @return bool
-	 */
-	private function isDue($expr) {
-		$date = date('Y-m-d H:i');
-		$time = strtotime($date);
+    /**
+     * Check if a cron job should be run.
+     * The expression could be any cron expression or a predefined value:
+     * - @yearly
+     * - @annually
+     * - @monthly
+     * - @weekly
+     * - @daily
+     * - @hourly
+     * ------------------------------
+     *   *    *    *    *    *    *
+     *   -    -    -    -    -    -
+     *   |    |    |    |    |    |
+     *   |    |    |    |    |    + year [optional]
+     *   |    |    |    |    +----- day of week (0 - 7) (Sunday=0 or 7)
+     *   |    |    |    +---------- month (1 - 12)
+     *   |    |    +--------------- day of month (1 - 31)
+     *   |    +-------------------- hour (0 - 23)
+     *   +------------------------- min (0 - 59)
+     *
+     * @param string $expr The cron expression
+     * @return bool
+     */
+    private function isDue($expr) {
+        $date = date('Y-m-d H:i');
+        $time = strtotime($date);
 
-		$cron = CronExpression::factory($expr);
-		return ($time == $cron->getNextRunDate($date, 0, true)->getTimestamp());
-	}
+        $cron = CronExpression::factory($expr);
+        return ($time == $cron->getNextRunDate($date, 0, true)->getTimestamp());
+    }
 
-	/**
-	 * Return the list of jubs to run.
-	 * @return array
-	 */
-	public function getJobs() {
-		return $this->jobs;
-	}
+    /**
+     * Return the list of jubs to run.
+     * @return array
+     */
+    public function getJobs() {
+        return $this->jobs;
+    }
 
-	/**
-	 * Get a particular job by msg
-	 * @param system $msg
-	 * @return boolean|array
-	 */
-	public function getJob($msg) {
-	    $found = false;
+    /**
+     * Get a particular job by msg
+     * @param system $msg
+     * @return boolean|array
+     */
+    public function getJob($msg) {
+        $found = false;
         foreach($this->jobs as $job) {
             if($job['msg'] === $msg) {
                 $found = $job;
@@ -113,19 +113,19 @@ class CronHelper extends Helper
         }
 
         return $found;
-	}
+    }
 
-	/**
-	 * Load the cron jobs to run and execute them.
-	 * @return int Number of runned tasks
-	 */
-	public function output($args = null) {
-		$i = 0;
-		foreach ($this->jobs as $job)
-		    if($job['function']($job['msg']) === TRUE)
-		        $i++;
+    /**
+     * Load the cron jobs to run and execute them.
+     * @return int Number of runned tasks
+     */
+    public function output($args = null) {
+        $i = 0;
+        foreach ($this->jobs as $job)
+            if($job['function']($job['msg']) === TRUE)
+                $i++;
 
-		$this->jobs = [];
-		return $i;
-	}
+        $this->jobs = [];
+        return $i;
+    }
 }

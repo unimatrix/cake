@@ -76,7 +76,7 @@ class BenchmarkHelper extends Helper
      * Calculate execution time
      * @return string
      */
-	public function output($args = null) {
+    public function output($args = null) {
         // calculate stuff
         $delta_T = ($this->stop - $this->start);
         $day = round(($delta_T % 604800) / 86400);
@@ -93,17 +93,17 @@ class BenchmarkHelper extends Helper
 
         // return stuff
         return $this->str_lreplace(',', ' and', implode(', ', $msg));
-	}
+    }
 
-	/**
-	 * Pluralize function
-	 * @param int $count
-	 * @param string $text
-	 * @return string
-	 */
-	private function pluralize($count, $text) {
-	    return $count . (($count == 1) ? (" $text") : (" {$text}s"));
-	}
+    /**
+     * Pluralize function
+     * @param int $count
+     * @param string $text
+     * @return string
+     */
+    private function pluralize($count, $text) {
+        return $count . (($count == 1) ? (" $text") : (" {$text}s"));
+    }
 
     /**
      * Replace function
@@ -112,7 +112,7 @@ class BenchmarkHelper extends Helper
      * @param string $subject
      * @return string
      */
-	private function str_lreplace($search, $replace, $subject) {
+    private function str_lreplace($search, $replace, $subject) {
         $pos = strrpos($subject, $search);
         if($pos !== false)
             $subject = substr_replace($subject, $replace, $pos, strlen($search));

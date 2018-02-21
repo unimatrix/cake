@@ -26,14 +26,14 @@ class CookieComponent extends Component
      * Default config.
      * @var array
      */
-	protected $_defaultConfig = [
+    protected $_defaultConfig = [
         'value' => '',
         'expire' => null,
         'path' => '/',
         'domain' => '',
         'secure' => false,
         'httpOnly' => false
-	];
+    ];
 
     /**
      * {@inheritDoc}
