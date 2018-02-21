@@ -69,7 +69,7 @@ class SluggableBehavior extends Behavior
             // loop till unique slug is found
             while ($this->_table->exists($conditions)) {
                 $i++;
-                $suffix    = $this->_config['replacement'] . $i;
+                $suffix = $this->_config['replacement'] . $i;
                 $conditions[$field] = $slug . $suffix;
             }
 
