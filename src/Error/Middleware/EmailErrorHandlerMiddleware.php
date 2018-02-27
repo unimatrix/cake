@@ -22,7 +22,7 @@ use Cake\Core\Configure;
  * use Unimatrix\Cake\Error\Middleware\EmailErrorHandlerMiddleware;
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class EmailErrorHandlerMiddleware extends ErrorHandlerMiddleware
 {
@@ -33,7 +33,8 @@ class EmailErrorHandlerMiddleware extends ErrorHandlerMiddleware
     // skip these exceptions
     protected $_skipExceptions = [
         'Cake\Network\Exception\NotFoundException',
-        'Cake\Routing\Exception\MissingRouteException'
+        'Cake\Routing\Exception\MissingRouteException',
+        'Cake\Routing\Exception\MissingControllerException'
     ];
 
     /**

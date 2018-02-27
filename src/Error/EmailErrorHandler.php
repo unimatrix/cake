@@ -24,7 +24,7 @@ use Exception;
  * use Unimatrix\Cake\Error\EmailErrorHandler;
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class EmailErrorHandler extends ErrorHandler
 {
@@ -36,7 +36,8 @@ class EmailErrorHandler extends ErrorHandler
     protected $_skipErrors = [E_NOTICE, E_WARNING];
     protected $_skipExceptions = [
         'Cake\Network\Exception\NotFoundException',
-        'Cake\Routing\Exception\MissingRouteException'
+        'Cake\Routing\Exception\MissingRouteException',
+        'Cake\Routing\Exception\MissingControllerException'
     ];
 
     /**

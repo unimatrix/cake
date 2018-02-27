@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-02-21 15:43+0200\n"
+"POT-Creation-Date: 2018-02-27 15:39+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -69,4 +69,40 @@ msgstr "secundă"
 #: /Shell/Helper/BenchmarkHelper.php:109
 msgid "seconds"
 msgstr "secunde"
+
+#: /Template/Element/error400.ctp:33
+msgid "Error 404"
+msgstr "Pagina cerută nu a fost găsită"
+
+#: /Template/Element/error400.ctp:35
+msgid "It looks like \"{0}\" doesn't exist or has expired."
+msgstr "Se pare că pagina \"{0}\" nu există sau a expirat."
+
+#: /Template/Element/error400.ctp:36
+msgid "If you've entered the url manually, make sure it is correct."
+msgstr "Dacă ai introdus adresa manual, asigură-te ca ai scris-o corect."
+
+#: /Template/Element/error400.ctp:37
+msgid "If you've followed a hyperlink to this page, the hyperlink is no longer available."
+msgstr "Dacă ai urmat o legătură către această pagină, legătura nu mai este actuală."
+
+#: /Template/Element/error400.ctp:38
+msgid "Go back to the {0} or visit the {1}."
+msgstr "Mergi înapoi la {0} sau vizitează {1}."
+
+#: /Template/Element/error400.ctp:39
+msgid "previous page"
+msgstr "pagina anterioară"
+
+#: /Template/Element/error400.ctp:40
+msgid "homepage"
+msgstr "prima pagină"
+
+#: /Template/Element/error500.ctp:39
+msgid "An internal error occurred"
+msgstr "A aparut o eroare internă"
+
+#: /Template/Element/error500.ctp:41
+msgid "Reference"
+msgstr "Referință"
 
