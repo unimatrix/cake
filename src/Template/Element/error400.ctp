@@ -37,5 +37,5 @@ endif;
     <?= __d('Unimatrix/cake', "If you've followed a hyperlink to this page, the hyperlink is no longer available.") ?><br /><br />
     <?= __d('Unimatrix/cake', 'Go back to the {0} or visit the {1}.',
         $this->Html->link(__d('Unimatrix/cake', 'previous page'), 'javascript:history.go(-1)'),
-        $this->Html->link(__d('Unimatrix/cake', 'homepage'), $this->Url->build('/'))) ?>
+        $this->Html->link(__d('Unimatrix/cake', 'homepage'), $this->Url->build('/', true))) ?>
 </p>
