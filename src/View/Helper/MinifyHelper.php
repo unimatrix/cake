@@ -84,7 +84,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.6
+ * @version 1.7
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -315,12 +315,16 @@ class MinifyHelper extends Helper {
      * Attempt to create the filename for the selected resources
      * @param string $what js | css
      * @throws Exception
-     * @return string
+     * @return string|bool
      */
     private function filename($what = null) {
         // not supported?
         if(!in_array($what, ['css', 'js']))
             throw new Exception("{$what} not supported");
+
+        // no files?
+        if(!$this->$what['intern'])
+            return false;
 
         $last = 0;
         foreach($this->$what['intern'] as $res)
@@ -477,8 +481,12 @@ class MinifyHelper extends Helper {
     private function _style() {
         // we need to compress?
         if($this->compress && $this->_config['compress']['css']) {
-            // get paths
+            // get cache
             $cache = $this->filename('css');
+            if(!$cache)
+                return false;
+
+            // get paths
             $web_path = $this->_config['paths']['css'] . '/' . $cache;
             $system_path = $this->css['full'] . DS . $cache;
 
@@ -505,8 +513,12 @@ class MinifyHelper extends Helper {
     private function _script() {
         // we need to compress?
         if($this->compress && $this->_config['compress']['js']) {
-            // get paths
+            // get cache
             $cache = $this->filename('js');
+            if(!$cache)
+                return false;
+
+            // get paths
             $web_path = $this->_config['paths']['js'] . '/' . $cache;
             $system_path = $this->js['full'] . DS . $cache;
 
