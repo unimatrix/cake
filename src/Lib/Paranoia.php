@@ -20,7 +20,8 @@ use Cake\Utility\Security;
  * @author Flavius
  * @version 1.0
  */
-class Paranoia {
+class Paranoia
+{
     /**
      * Get secret key from either
      * the security salt or from parameter

@@ -9,7 +9,8 @@ namespace Unimatrix\Cake\Lib;
  * @author Flavius
  * @version 1.0
  */
-class Lexicon {
+class Lexicon
+{
     // regex syntax used (case insensitive, unicode)
     private static $re = '/(%s)/iu';
     private static $ro = ['a' => '[aăâ]', 's' => '[sșş]', 't' => '[tțţ]', 'i' => '[iî]'];

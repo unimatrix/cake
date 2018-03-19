@@ -9,7 +9,8 @@ namespace Unimatrix\Cake\Lib;
  * @author Flavius
  * @version 2.0
  */
-class Misc {
+class Misc
+{
     // pre style
     public static $pre = [
         'font-family: monospace',  'white-space: pre', 'margin: 1em',
