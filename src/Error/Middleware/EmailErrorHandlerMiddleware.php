@@ -34,7 +34,8 @@ class EmailErrorHandlerMiddleware extends ErrorHandlerMiddleware
     protected $_skipExceptions = [
         'Cake\Network\Exception\NotFoundException',
         'Cake\Routing\Exception\MissingRouteException',
-        'Cake\Routing\Exception\MissingControllerException'
+        'Cake\Routing\Exception\MissingControllerException',
+        'Cake\Datasource\Exception\RecordNotFoundException'
     ];
 
     /**
