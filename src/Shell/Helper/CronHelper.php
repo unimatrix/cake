@@ -100,7 +100,7 @@ class CronHelper extends Helper
 
     /**
      * Get a particular job by msg
-     * @param system $msg
+     * @param string $msg Job message
      * @return boolean|array
      */
     public function getJob($msg) {

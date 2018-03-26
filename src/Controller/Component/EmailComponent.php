@@ -67,7 +67,7 @@ class EmailComponent extends Component
      * @param string $template
      * @param string $layout
      * @param string $config
-     * @throws SocketException if mail could not be sent
+     * @throws \Cake\Network\Exception\SocketException if mail could not be sent
      */
     public function send($data = [], $template = 'default', $layout = 'default', $config = 'default') {
         // initialize email

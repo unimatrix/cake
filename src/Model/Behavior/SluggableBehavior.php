@@ -51,7 +51,7 @@ class SluggableBehavior extends Behavior
 
     /**
      * Slug a field passed in the default config with its replacement.
-     * @param $value The string that needs to be processed
+     * @param string $value The string that needs to be processed
      * @return string
      */
     private function slug($value = null) {

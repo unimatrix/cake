@@ -31,7 +31,7 @@ class Misc
      * Makes the debug pretty for output
      * also adds the option to place a title :)
      *
-     * @param unknown $var
+     * @param integer|string|array|bool|object $var
      * @param string $title
      * @param bool $return
      */

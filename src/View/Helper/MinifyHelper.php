@@ -132,7 +132,7 @@ class MinifyHelper extends Helper {
     /**
      * Constructor
      * @param View $View
-     * @param unknown $settings
+     * @param array $config
      */
     public function __construct(View $View, array $config = []) {
         // call parent constructor
@@ -182,6 +182,7 @@ class MinifyHelper extends Helper {
     /**
      * Fetch either combined css or js
      * @param string $what style | script
+     * @param bool $live
      * @throws Exception
      */
     public function fetch($what = null, $live = false) {
@@ -380,6 +381,7 @@ class MinifyHelper extends Helper {
      * This function uses morph to fix and convert paths found in css
      *
      * @param string $input
+     * @param bool $from
      * @return string
      */
     private function dilemma($input = null, $from = false) {
