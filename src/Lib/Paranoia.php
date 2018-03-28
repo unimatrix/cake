@@ -18,7 +18,7 @@ use Cake\Utility\Security;
  * $decrypted = Paranoia::decrypt('string_to_decrypt');
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class Paranoia
 {
@@ -26,40 +26,51 @@ class Paranoia
      * Get secret key from either
      * the security salt or from parameter
      *
-     * @param string $s
+     * @param string $secret
      * @return string
      */
-    private static function secret($s = null) {
-        return is_null($s) ? Security::getSalt() : $s;
+    private static function secret($secret = null) {
+        return is_null($secret) ? Security::getSalt() : $secret;
     }
 
     /**
      * Encrypt
-     *
-     * @param integer|string $a
-     * @param string $s Paranoia secret
-     * @return null|string
+     * @param integer|string $input
+     * @param string $secret Paranoia secret
+     * @return boolean|string
      */
-    public static function encrypt($a = null, $s = null) {
-        if(is_null($a))
-            return $a;
+    public static function encrypt($input, $secret = null) {
+        // no input?
+        if(!$input)
+            return false;
 
-        $b = Security::encrypt($a, md5(self::secret($s)));
-        return strtr(base64_encode($b), '+/=', '-_.');
+        // encrypt
+        $encrypted = Security::encrypt($input, md5(self::secret($secret)));
+
+        // encode
+        return strtr(base64_encode($encrypted), '+/', '-_');
     }
 
     /**
      * Decrypt
-     *
-     * @param string $a
-     * @param string $s Paranoia secret
-     * @return null|integer|string
+     * @param string $input
+     * @param string $secret Paranoia secret
+     * @return boolean|string|boolean
      */
-    public static function decrypt($a = null, $s = null) {
-        if(is_null($a))
-            return $a;
+    public static function decrypt($input, $secret = null) {
+        // no input?
+        if(!$input)
+            return false;
 
-        $b = base64_decode(strtr($a, '-_.', '+/='));
-        return Security::decrypt($b, md5(self::secret($s)));
+        // backwards 1.0 compatibility
+        $input = strtr($input, '.', '=');
+
+        // decode
+        $decoded = base64_decode(str_pad(strtr($input, '-_', '+/'), strlen($input) % 4, '=', STR_PAD_RIGHT));
+        if(!$decoded)
+            return false;
+
+        // decrypt
+        return Security::decrypt($decoded, md5(self::secret($secret)));
     }
 }
