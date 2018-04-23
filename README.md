@@ -20,7 +20,7 @@ The recommended way to install composer packages is:
 composer require unimatrix/cake:^3.0
 ```
 
-Don't forget to load it in your bootstrap function inside `Application.php`
+Don't forget to load it under your bootstrap function in `Application.php`
 ```
-    $this->addPlugin('Unimatrix/Cake');
+$this->addPlugin('Unimatrix/Cake');
 ```
