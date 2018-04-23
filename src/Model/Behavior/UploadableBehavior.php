@@ -77,7 +77,7 @@ class UploadableBehavior extends Behavior
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options) {
         // load validator and add our custom upload validator
-        $validator = $this->_table->validator();
+        $validator = $this->_table->getValidator();
         $validator->setProvider('upload', UploadValidation::class);
 
         // go through each field
@@ -180,7 +180,7 @@ class UploadableBehavior extends Behavior
 
         // handle identifiers
         $identifiers = [
-            ':model' => strtolower($entity->source()),
+            ':model' => strtolower($entity->getSource()),
             ':uuid' => Text::uuid(),
             ':md5' => md5(rand() . uniqid() . time()),
         ];

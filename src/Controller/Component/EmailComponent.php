@@ -93,7 +93,7 @@ class EmailComponent extends Component
             'brand' => $brand,
             'form' => $data['form'] ?? [],
             'info' => [
-                'ip' => $this->getController()->request->clientIP(),
+                'ip' => $this->getController()->getRequest()->clientIP(),
                 'useragent' => env('HTTP_USER_AGENT'),
                 'date' => strftime('%d.%m.%Y %H:%M')
             ]

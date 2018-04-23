@@ -44,7 +44,7 @@ class CookieComponent extends Component
 
         // set request
         $this->ctrl = $this->getController();
-        $this->cookies = (new CookieCollection())->createFromServerRequest($this->ctrl->request);
+        $this->cookies = (new CookieCollection())->createFromServerRequest($this->ctrl->getRequest());
     }
 
     /**
@@ -103,7 +103,7 @@ class CookieComponent extends Component
             $cookie->withExpiry(new DateTime($options['expire']));
 
         // send with response
-        $this->ctrl->response = $this->ctrl->response->withCookie($cookie);
+        $this->ctrl->setResponse($this->ctrl->getResponse()->withCookie($cookie));
     }
 
     /**
@@ -125,6 +125,6 @@ class CookieComponent extends Component
             ->withHttpOnly($options['httpOnly']);
 
         // send with response
-        $this->ctrl->response = $this->ctrl->response->withExpiredCookie($cookie);
+        $this->ctrl->setResponse($this->ctrl->getResponse()->withExpiredCookie($cookie));
     }
 }
