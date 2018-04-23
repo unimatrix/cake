@@ -1,12 +1,12 @@
 {
     "name": "unimatrix/cake",
-    "description": "Utilities for CakePHP 3.5",
+    "description": "Utilities for CakePHP 3.6",
     "type": "cakephp-plugin",
     "homepage": "https://venture.unimatrix.ro",
     "license": "MIT",
     "require": {
-        "php": ">=7.0.0",
-        "cakephp/cakephp": "3.5.*",
+        "php": ">=7.2.0",
+        "cakephp/cakephp": "3.6.*",
         "mtdowling/cron-expression":"^1.2",
         "matthiasmullie/minify": "^1.3",
         "voku/html-min": "^3.0"
