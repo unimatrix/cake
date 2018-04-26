@@ -18,7 +18,7 @@ use Facebook\PersistentData\PersistentDataInterface;
  *     'app_id' => $cfg['app'],
  *     'app_secret' => $cfg['secret'],
  *     'default_graph_version' => $cfg['version'],
- *     'persistent_data_handler' => new SessionHandler($this->request->session()),
+ *     'persistent_data_handler' => new SessionHandler($this->getRequest()->getSession()),
  * ]);
  *
  * @author Flavius

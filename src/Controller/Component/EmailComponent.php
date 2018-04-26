@@ -49,11 +49,11 @@ use Unimatrix\Cake\Lib\Misc;
  * // send email
  * $this->Email->send([
  *     'subject' => 'Solicitare contact',
- *     'form' => $this->request->getData()
+ *     'form' => $this->getRequest()->getData()
  * ]);
  *
  * // send email debug
- * $this->Email->debug('New subscriber', $this->request->data['email'], true, false);
+ * $this->Email->debug('New subscriber', $this->getRequest()->getData('email'), true, false);
  *
  * @author Flavius
  * @version 1.1
