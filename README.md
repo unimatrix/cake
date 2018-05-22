@@ -1,13 +1,15 @@
 # Unimatrix Cake
 
-[![Version](https://img.shields.io/packagist/v/unimatrix/cake.svg?style=flat-square)](https://packagist.org/packages/unimatrix/cake)
-[![Total Downloads](https://img.shields.io/packagist/dt/unimatrix/cake.svg?style=flat-square)](https://packagist.org/packages/unimatrix/cake/stats)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/unimatrix/cake/master/LICENSE)
+[![Build Status](https://api.travis-ci.org/unimatrix/cake.svg?branch=master)](https://travis-ci.org/unimatrix/cake)
+[![Coverage Status](https://codecov.io/gh/unimatrix/cake/branch/master/graph/badge.svg)](https://codecov.io/gh/unimatrix/cake)
+[![Latest Stable Version](https://poser.pugx.org/unimatrix/cake/v/stable.svg)](https://packagist.org/packages/unimatrix/cake)
+[![License](https://poser.pugx.org/unimatrix/cake/license.svg)](https://packagist.org/packages/unimatrix/cake)
+[![Total Downloads](https://poser.pugx.org/unimatrix/cake/d/total.svg)](https://packagist.org/packages/unimatrix/cake)
 
 Utilities for CakePHP 3.6
 
 ## Requirements
-* PHP >= 7.2
+* PHP >= 7.1
 * CakePHP >= 3.6
 
 ## Installation
