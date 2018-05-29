@@ -116,6 +116,10 @@ class CookieComponent extends Component
         // handle config
         $options = $config + $this->_config;
 
+        // delete from cache
+        if(isset($this->cache[$name]))
+            unset($this->cache[$name]);
+
         // create cookie
         $cookie = (new Cookie($name))
             ->withValue('')
