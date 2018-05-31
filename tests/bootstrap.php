@@ -18,7 +18,8 @@ $findRoot = function ($root) {
 };
 $root = $findRoot(__FILE__);
 unset($findRoot);
-chdir($root);
 
-require $root . '/vendor/autoload.php';
-require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+chdir($root);
+define('PLUGIN_PATH', $root);
+require PLUGIN_PATH . '/vendor/autoload.php';
+require PLUGIN_PATH . '/vendor/cakephp/cakephp/tests/bootstrap.php';
