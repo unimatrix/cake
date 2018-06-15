@@ -103,6 +103,8 @@ class EmailConsoleErrorHandlerTest extends TestCase
             ->method('_email')
             ->with('CLI Exception', Misc::dump($exception, $content, true));
 
+            dump(Misc::dump($exception, $content, true));
+
         $this->handler->handleException($exception);
     }
 }
