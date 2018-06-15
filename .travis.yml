@@ -9,9 +9,6 @@ dist: trusty
 matrix:
   fast_finish: true
 
-# before_install:
-#  - phpenv config-rm xdebug.ini
-
 before_script:
   - composer install --prefer-dist --no-interaction
 
