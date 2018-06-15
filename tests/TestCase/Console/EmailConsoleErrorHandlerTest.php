@@ -99,11 +99,13 @@ class EmailConsoleErrorHandlerTest extends TestCase
     public function testHandleException() {
         $content = 'Test exception.';
         $exception = new Exception($content);
+
+        dump(Misc::dump($exception, $content, true));
+        exit;
+
         $this->handler->expects($this->once())
             ->method('_email')
             ->with('CLI Exception', Misc::dump($exception, $content, true));
-
-            dump(Misc::dump($exception, $content, true));
 
         $this->handler->handleException($exception);
     }
