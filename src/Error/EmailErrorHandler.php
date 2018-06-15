@@ -4,10 +4,14 @@ namespace Unimatrix\Cake\Error;
 
 use Unimatrix\Cake\Lib\Misc;
 use Unimatrix\Cake\Controller\Component\EmailComponent;
-use Cake\Controller\ComponentRegistry;
-use Cake\Error\PHP7ErrorException;
-use Cake\Error\ErrorHandler;
 use Cake\Core\Configure;
+use Cake\Controller\ComponentRegistry;
+use Cake\Error\ErrorHandler;
+use Cake\Error\PHP7ErrorException;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Routing\Exception\MissingRouteException;
+use Cake\Routing\Exception\MissingControllerException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Exception;
 
 /**
@@ -24,33 +28,29 @@ use Exception;
  * use Unimatrix\Cake\Error\EmailErrorHandler;
  *
  * @author Flavius
- * @version 1.1
+ * @version 1.2
  */
 class EmailErrorHandler extends ErrorHandler
 {
-    // debug & email
+    // debug
     private $debug = false;
-    private $email = false;
 
     // skip these errors and exceptions
     protected $_skipErrors = [E_NOTICE, E_WARNING];
     protected $_skipExceptions = [
-        'Cake\Network\Exception\NotFoundException',
-        'Cake\Routing\Exception\MissingRouteException',
-        'Cake\Routing\Exception\MissingControllerException',
-        'Cake\Datasource\Exception\RecordNotFoundException'
+        NotFoundException::class,
+        MissingRouteException::class,
+        MissingControllerException::class,
+        RecordNotFoundException::class
     ];
 
     /**
      * Constructor
-     *
      * @param array $options The options for error handling.
      */
     public function __construct($options = []) {
-        // set debug & email
+        // set debug
         $this->debug = Configure::read('debug');
-        if(!$this->debug)
-            $this->email = new EmailComponent(new ComponentRegistry());
 
         // run parent
         parent::__construct($options);
@@ -65,8 +65,8 @@ class EmailErrorHandler extends ErrorHandler
         $type = $this->mapErrorCode($code)[0] . ' Error: ';
 
         // send a debug mail with the error
-        if($this->email && !in_array($code, $this->_skipErrors))
-            $this->email->debug('Website Error', Misc::dump([
+        if(!$this->debug && !in_array($code, $this->_skipErrors))
+            $this->_email('Website Error', Misc::dump([
                 'type' => rtrim($type, ': '),
                 'description' => $description,
                 'file' => $file,
@@ -88,10 +88,22 @@ class EmailErrorHandler extends ErrorHandler
         $message = $exception instanceof PHP7ErrorException ? $exception->getError()->getMessage(): $exception->getMessage();
 
         // send a debug mail with the exception
-        if($this->email && !in_array(get_class($exception), $this->_skipExceptions))
-            $this->email->debug('Website Exception', Misc::dump($exception, $message, true));
+        if(!$this->debug && !in_array(get_class($exception), $this->_skipExceptions))
+            $this->_email('Website Exception', Misc::dump($exception, $message, true));
 
         // continue with exception handle logic
         parent::handleException($exception);
+    }
+
+    /**
+     * Send the email
+     * @param string $title
+     * @param string $body
+     * @return void
+     */
+    protected function _email($title, $body) {
+        // @codeCoverageIgnoreStart
+        return (new EmailComponent(new ComponentRegistry()))->debug($title, $body);
+        // @codeCoverageIgnoreEnd
     }
 }

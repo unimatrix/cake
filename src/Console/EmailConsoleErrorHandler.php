@@ -4,10 +4,10 @@ namespace Unimatrix\Cake\Console;
 
 use Unimatrix\Cake\Lib\Misc;
 use Unimatrix\Cake\Controller\Component\EmailComponent;
-use Cake\Controller\ComponentRegistry;
-use Cake\Console\ConsoleErrorHandler;
-use Cake\Error\PHP7ErrorException;
 use Cake\Core\Configure;
+use Cake\Console\ConsoleErrorHandler;
+use Cake\Controller\ComponentRegistry;
+use Cake\Error\PHP7ErrorException;
 use Exception;
 
 /**
@@ -24,13 +24,12 @@ use Exception;
  * use Unimatrix\Cake\Console\EmailConsoleErrorHandler;
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class EmailConsoleErrorHandler extends ConsoleErrorHandler
 {
-    // debug & email
+    // debug
     private $debug = false;
-    private $email = false;
 
     // skip these errors and exceptions
     protected $_skipErrors = [E_NOTICE, E_WARNING];
@@ -38,14 +37,11 @@ class EmailConsoleErrorHandler extends ConsoleErrorHandler
 
     /**
      * Constructor
-     *
      * @param array $options The options for error handling.
      */
     public function __construct($options = []) {
-        // set debug & email
+        // set debug
         $this->debug = Configure::read('debug');
-        if(!$this->debug)
-            $this->email = new EmailComponent(new ComponentRegistry());
 
         // run parent
         parent::__construct($options);
@@ -60,8 +56,8 @@ class EmailConsoleErrorHandler extends ConsoleErrorHandler
         $type = $this->mapErrorCode($code)[0] . ' Error: ';
 
         // send a debug mail with the error
-        if($this->email && !in_array($code, $this->_skipErrors))
-            $this->email->debug('CLI Error', Misc::dump([
+        if(!$this->debug && !in_array($code, $this->_skipErrors))
+            $this->_email('CLI Error', Misc::dump([
                 'type' => rtrim($type, ': '),
                 'description' => $description,
                 'file' => $file,
@@ -83,10 +79,22 @@ class EmailConsoleErrorHandler extends ConsoleErrorHandler
         $message = $exception instanceof PHP7ErrorException ? $exception->getError()->getMessage(): $exception->getMessage();
 
         // send a debug mail with the exception
-        if($this->email && !in_array(get_class($exception), $this->_skipExceptions))
-            $this->email->debug('CLI Exception', Misc::dump($exception, $message, true));
+        if(!$this->debug && !in_array(get_class($exception), $this->_skipExceptions))
+            $this->_email('CLI Exception', Misc::dump($exception, $message, true));
 
         // continue with exception handle logic
         parent::handleException($exception);
+    }
+
+    /**
+     * Send the email
+     * @param string $title
+     * @param string $body
+     * @return void
+     */
+    protected function _email($title, $body) {
+        // @codeCoverageIgnoreStart
+        return (new EmailComponent(new ComponentRegistry()))->debug($title, $body);
+        // @codeCoverageIgnoreEnd
     }
 }
