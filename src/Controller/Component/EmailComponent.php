@@ -56,7 +56,7 @@ use Unimatrix\Cake\Lib\Misc;
  * $this->Email->debug('New subscriber', $this->getRequest()->getData('email'), true, false);
  *
  * @author Flavius
- * @version 1.1
+ * @version 1.2
  */
 class EmailComponent extends Component
 {
@@ -68,6 +68,7 @@ class EmailComponent extends Component
      * @param string $layout
      * @param string $config
      * @throws \Cake\Network\Exception\SocketException if mail could not be sent
+     * @return array
      */
     public function send($data = [], $template = 'default', $layout = 'default', $config = 'default') {
         // initialize email
@@ -100,7 +101,7 @@ class EmailComponent extends Component
         ]);
 
         // send email
-        $email->send();
+        return $email->send();
     }
 
     /**
@@ -110,6 +111,7 @@ class EmailComponent extends Component
      * @param string $body
      * @param bool $request
      * @param bool $server
+     * @return array
      */
     public function debug($subject = null, $body = null, $request = true, $server = true) {
         // initialize email
@@ -127,12 +129,14 @@ class EmailComponent extends Component
             // check if private or protected
             $check = new \ReflectionMethod($one['class'], $one['function']);
             if($check->isPrivate() || $check->isProtected()) {
+                // @codeCoverageIgnoreStart
                 $location[3] = $one['function'];
                 continue;
+                // @codeCoverageIgnoreEnd
             }
 
             // set class and function
-            $location[1] = str_replace(['Controller', 'App\\\\'], null, $one['class']);
+            $location[1] = str_replace(['Controller', 'App\\\\', 'TestCase\\\\'], null, $one['class']);
             $location[2] = $one['function'];
             break;
         }
@@ -145,6 +149,7 @@ class EmailComponent extends Component
             if($location[1] == 'Unimatrix\Cake\Console\EmailConsoleErrorHandler') $location = ['EmailConsoleErrorHandler'];
             elseif($location[1] == 'Unimatrix\Cake\Error\EmailErrorHandler') $location = ['EmailErrorHandler'];
             elseif($location[1] == 'Unimatrix\Cake\Error\Middleware\EmailErrorHandlerMiddleware') $location = ['EmailErrorHandlerMiddleware'];
+            elseif($location[1] == 'Unimatrix\Cake\Test\Component\EmailComponentTest') $location = ['EmailComponentTest'];
         }
 
         // get brand
@@ -153,6 +158,7 @@ class EmailComponent extends Component
 
         // set subject
         $email->setSubject($brand . ' report: [' . implode('->', $location) . '] ' . $subject);
+        $email->setViewVars(['subject' => $email->getSubject()]);
 
         // body start
         $body = $body == strip_tags($body) ? nl2br($body) : $body;
@@ -177,6 +183,6 @@ class EmailComponent extends Component
             $body .= Misc::dump($_SERVER, '$_SERVER', true);
 
         // send email
-        $email->send($body);
+        return $email->send($body);
     }
 }

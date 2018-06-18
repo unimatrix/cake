@@ -70,7 +70,7 @@ class EmailErrorHandlerMiddleware extends ErrorHandlerMiddleware
      * Send the email
      * @param string $title
      * @param string $body
-     * @return void
+     * @return array
      */
     protected function _email($title, $body) {
         // @codeCoverageIgnoreStart

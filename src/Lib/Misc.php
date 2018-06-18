@@ -7,7 +7,7 @@ namespace Unimatrix\Cake\Lib;
  * Contains helper functions
  *
  * @author Flavius
- * @version 2.0
+ * @version 2.1
  */
 class Misc
 {
@@ -34,6 +34,7 @@ class Misc
      * @param integer|string|array|bool|object $var
      * @param string $title
      * @param bool $return
+     * @return bool
      */
     public static function dump($var, $title = false, $return = false) {
         // capture on return
@@ -50,7 +51,6 @@ class Misc
         echo "</pre>";
 
         // return output
-        if($return)
-            return ob_get_clean();
+        return $return ? ob_get_clean() : true;
     }
 }

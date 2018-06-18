@@ -1,1 +1,3 @@
-<?= $content ?>
+<?php
+
+echo $content;
