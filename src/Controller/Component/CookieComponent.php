@@ -11,7 +11,7 @@ use Cake\Controller\Component;
  * Cookie Component for cake 3.5+
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class CookieComponent extends Component
 {
@@ -54,6 +54,10 @@ class CookieComponent extends Component
      * @return boolean
      */
     public function check($name) {
+        // is in cache?
+        if(isset($this->cache[$name]))
+            return true;
+
         return $this->cookies->has($name);
     }
 
@@ -100,7 +104,7 @@ class CookieComponent extends Component
 
         // handle expire
         if($options['expire'])
-            $cookie->withExpiry(new DateTime($options['expire']));
+            $cookie = $cookie->withExpiry(new DateTime($options['expire']));
 
         // send with response
         $this->ctrl->setResponse($this->ctrl->getResponse()->withCookie($cookie));
