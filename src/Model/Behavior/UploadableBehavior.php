@@ -9,6 +9,7 @@ use Cake\Filesystem\Folder;
 use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\Utility\Text;
+use Unimatrix\Cake\Database\Type\FileType;
 use Unimatrix\Cake\Validation\UploadValidation;
 use ArrayObject;
 
@@ -38,7 +39,7 @@ use ArrayObject;
  *     ->allowEmpty('file', 'update');
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class UploadableBehavior extends Behavior
 {
@@ -58,7 +59,7 @@ class UploadableBehavior extends Behavior
      */
     public function initialize(array $config) {
         // load the file type & schema
-        Type::map('unimatrix.file', '\Unimatrix\Cake\Database\Type\FileType');
+        Type::map('unimatrix.file', FileType::class);
         $schema = $this->_table->getSchema();
 
         // go through each field and change the column type to our file type
