@@ -7,7 +7,7 @@ use Unimatrix\Cake\Lib\Short;
 
 class ShortTest extends TestCase
 {
-    public function testFunctionality() {
+    public function testEncodeDecode() {
         $this->assertSame(Short::decode(Short::encode(0)), 0);
         $this->assertSame(Short::decode(Short::encode(50)), 50);
         $this->assertSame(Short::decode(Short::encode(100)), 100);

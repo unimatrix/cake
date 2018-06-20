@@ -19,7 +19,7 @@ use Cake\Utility\Security;
  * $decrypted = Paranoia::decrypt('string_to_decrypt');
  *
  * @author Flavius
- * @version 1.2
+ * @version 1.3
  */
 class Paranoia
 {
@@ -35,7 +35,7 @@ class Paranoia
             return false;
 
         // encrypt
-        $encrypted = Security::encrypt($input, md5(self::secret($secret)));
+        $encrypted = Security::encrypt((string)$input, md5(self::secret($secret)));
 
         // output
         return self::base64encode($encrypted);
@@ -73,7 +73,7 @@ class Paranoia
             return false;
 
         // run xor
-        $xored = self::xor($input, self::secret($secret));
+        $xored = self::xor((string)$input, self::secret($secret));
 
         // output
         return self::base64encode($xored);
