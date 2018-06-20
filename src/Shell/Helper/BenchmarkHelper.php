@@ -3,6 +3,7 @@
 namespace Unimatrix\Cake\Shell\Helper;
 
 use Cake\Console\Helper;
+use Cake\I18n\Time;
 
 /**
  * Benchmark tool
@@ -32,44 +33,44 @@ use Cake\Console\Helper;
  * ----------------------------------------------------------------
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class BenchmarkHelper extends Helper
 {
     // benchmark
-    private $start = 0;
-    private $stop = 0;
+    private $begin;
+    private $end;
 
     /**
      * Set the start time
      */
     public function start() {
-        $this->start = time();
+        $this->begin = new Time();
     }
 
     /**
      * Started on
-     * @param string $date
+     * @param string $format
      * @return string
      */
-    public function started($date = 'j F Y, g:i a') {
-        return date($date, $this->start);
+    public function started($format = 'dd MMMM yyyy, h:mm a') {
+        return $this->begin->i18nFormat($format);
     }
 
     /**
      * Set the stop time
      */
     public function stop() {
-        $this->stop = time();
+        $this->end = new Time();
     }
 
     /**
      * Ended on
-     * @param string $date
+     * @param string $format
      * @return string
      */
-    public function ended($date = 'j F Y, g:i a') {
-        return date($date, $this->stop);
+    public function ended($format = 'dd MMMM yyyy, h:mm a') {
+        return $this->end->i18nFormat($format);
     }
 
     /**
@@ -77,19 +78,15 @@ class BenchmarkHelper extends Helper
      * @return string
      */
     public function output($args = null) {
-        // calculate stuff
-        $delta = ($this->stop - $this->start);        
-        $days = round(($delta % 604800) / 86400);
-        $hours = round((($delta % 604800) % 86400) / 3600);
-        $minutes = round(((($delta % 604800) % 86400) % 3600) / 60);
-        $seconds = round((((($delta % 604800) % 86400) % 3600) % 60));
+        // calculate diff
+        $diff = $this->end->diff($this->begin);
 
-        // output stuff
+        // decide stuff
         $msg = [];
-        if($days > 0) $msg[] = $this->plural($days, 'd');
-        if($hours > 0) $msg[] = $this->plural($hours, 'h');
-        if($minutes > 0) $msg[] = $this->plural($minutes, 'm');
-        $msg[] = $this->plural($seconds);
+        if($diff->d > 0) $msg[] = $this->plural($diff->d, 'd');
+        if($diff->h > 0) $msg[] = $this->plural($diff->h, 'h');
+        if($diff->i > 0) $msg[] = $this->plural($diff->i, 'i');
+        $msg[] = $this->plural($diff->s);
 
         // return stuff
         return $this->str_lreplace(',', ' ' . __d('Unimatrix/cake', 'and'), implode(', ', $msg));
@@ -105,10 +102,10 @@ class BenchmarkHelper extends Helper
         $type = $o;
         if($o == 'd') $type = $c == 1 ? __d('Unimatrix/cake', 'day') : __d('Unimatrix/cake', 'days');
         if($o == 'h') $type = $c == 1 ? __d('Unimatrix/cake', 'hour') : __d('Unimatrix/cake', 'hours');
-        if($o == 'm') $type = $c == 1 ? __d('Unimatrix/cake', 'minute') : __d('Unimatrix/cake', 'minutes');
+        if($o == 'i') $type = $c == 1 ? __d('Unimatrix/cake', 'minute') : __d('Unimatrix/cake', 'minutes');
         if($o == 's') $type = $c == 1 ? __d('Unimatrix/cake', 'second') : __d('Unimatrix/cake', 'seconds');
 
-        return $c . ' ' . $type;
+        return "{$c} {$type}";
     }
 
     /**

@@ -68,7 +68,7 @@ class UploadValidation
     }
 
     /**
-     * Check that the upload was not stopped by an extension
+     * Check that the upload was not stopped by a php extension
      * @param mixed $check Value to check
      * @return bool Success
      */
