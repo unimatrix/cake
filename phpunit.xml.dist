@@ -4,8 +4,7 @@
 	processIsolation="false"
 	stopOnFailure="false"
 	syntaxCheck="false"
-	bootstrap="tests/bootstrap.php"
-	>
+	bootstrap="tests/bootstrap.php">
 
 	<!-- Add any additional test suites you want to run here -->
 	<testsuites>

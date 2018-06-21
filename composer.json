@@ -17,12 +17,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Unimatrix\\Cake\\": "src"
+            "Unimatrix\\Cake\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Unimatrix\\Cake\\Test\\": "tests"
+            "Unimatrix\\Cake\\Test\\": "tests/",
+            "Unimatrix\\Cake\\Test\\Fixture\\" : "tests/Fixture/"
         }
     }
 }
