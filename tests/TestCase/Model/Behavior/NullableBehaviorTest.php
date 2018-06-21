@@ -3,13 +3,27 @@
 namespace Unimatrix\Cake\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
-use Cake\Event\Event;
-use Cake\ORM\Behavior;
-use Cake\ORM\Entity;
+use Unimatrix\Cake\Model\Behavior\NullableBehavior;
 
 class NullableBehaviorTest extends TestCase
 {
-    public function testSomething() {
-        $this->assertTrue(true);
+    public $fixtures = [
+        'plugin.unimatrix\cake.articles',
+    ];
+
+    public function testNull() {
+        $table = $this->getTableLocator()->get('Articles');
+        $table->addBehavior(NullableBehavior::class);
+
+        $article = $table->find()->first();
+        $this->assertEquals(1, $article->get('id'));
+
+        $article->set('photo', null);
+        $table->save($article);
+        $this->assertNull($article->get('photo'));
+
+        $article->set('photo', '');
+        $table->save($article);
+        $this->assertNull($article->get('photo'));
     }
 }
