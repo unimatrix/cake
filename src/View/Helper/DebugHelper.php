@@ -20,7 +20,7 @@ use Cake\View\Helper;
  * $this->Number->precision($this->Debug->requestTime() * 1000, 0)
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
 class DebugHelper extends Helper
 {
@@ -37,12 +37,13 @@ class DebugHelper extends Helper
     }
 
     /**
-     * get the time the current request started.
+     * Get the time the current request started.
      *
+     * @param bool $test Stub to help test the code by avoiding the constant
      * @return float time of request start
      */
-    public static function requestStartTime() {
-        if(defined('TIME_START')) $startTime = TIME_START;
+    public static function requestStartTime($test = false) {
+        if(defined('TIME_START') && $test === false) $startTime = TIME_START;
         elseif(isset($GLOBALS['TIME_START'])) $startTime = $GLOBALS['TIME_START'];
         else $startTime = env('REQUEST_TIME');
 
