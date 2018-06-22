@@ -4,6 +4,7 @@ namespace Unimatrix\Cake\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
 use Cake\Filesystem\File;
+use Cake\Filesystem\Folder;
 use Unimatrix\Cake\Model\Behavior\UploadableBehavior;
 use RuntimeException;
 
@@ -12,6 +13,12 @@ class UploadableBehaviorTest extends TestCase
     public $fixtures = [
         'plugin.unimatrix\cake.articles',
     ];
+
+    public function tearDown() {
+        parent::tearDown();
+        $uploads = new Folder(WWW_ROOT . 'img', true);
+        $uploads->delete();
+    }
 
     public function testNoConfig() {
         $this->expectException(RuntimeException::class);

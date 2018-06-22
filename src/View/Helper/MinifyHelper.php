@@ -84,7 +84,7 @@ class Algorithms
  * ");
  *
  * @author Flavius
- * @version 1.7
+ * @version 1.8
  */
 class MinifyHelper extends Helper {
     // load html and url helpers
@@ -162,21 +162,23 @@ class MinifyHelper extends Helper {
     /**
      * Add css files to list
      * @param array $files
+     * @param string $type
      * @return bool
      */
-    public function style($files = null) {
+    public function style($files = null, $type = 'css') {
         // organize files and return if successfull or not
-        return $this->organize('css', $files);
+        return $this->organize($type, $files);
     }
 
     /**
      * Add js files to list
      * @param array $files
+     * @param string $type
      * @return bool
      */
-    public function script($files = null) {
+    public function script($files = null, $type = 'js') {
         // organize files and return if successfull or not
-        return $this->organize('js', $files);
+        return $this->organize($type, $files);
     }
 
     /**
@@ -291,38 +293,44 @@ class MinifyHelper extends Helper {
             return $webrootPath;
 
         // do plugin webroot path
-        $parts = [];
-        $segments = explode('/', $fullpath);
-        for($i = 0; $i < 2; $i++) {
-            if(!isset($segments[$i]))
-                break;
-
-            $parts[] = Inflector::camelize($segments[$i]);
-            $plugin = implode('/', $parts);
-
-            if($plugin && Plugin::loaded($plugin)) {
-                $segments = array_slice($segments, $i + 1);
-                $pluginWebrootPath = str_replace('/', DS, Plugin::path($plugin)) . 'webroot' . DS . implode(DS, $segments);
-                if(file_exists($pluginWebrootPath))
-                    return $pluginWebrootPath;
-            }
-        }
+        $pluginFile = $this->_getPluginFile($fullpath);
+        if($pluginFile !== null && file_exists($pluginFile))
+            return $pluginFile;
 
         // not found?
         return false;
     }
 
     /**
+     * Builds plugin file path based off url
+     * @param string $url Plugin URL
+     * @return string Absolute path for plugin file
+     */
+    protected function _getPluginFile($url) {
+        $parts = explode('/', ltrim($url, '/'));
+        $pluginPart = [];
+        for($i = 0; $i < 2; $i++) {
+            // @codeCoverageIgnoreStart
+            if(!isset($parts[$i]))
+                break;
+            // @codeCoverageIgnoreEnd
+            $pluginPart[] = Inflector::camelize($parts[$i]);
+            $plugin = implode('/', $pluginPart);
+            if($plugin && Plugin::loaded($plugin)) {
+                $parts = array_slice($parts, $i + 1);
+                $fileFragment = implode(DIRECTORY_SEPARATOR, $parts);
+                $pluginWebroot = Plugin::path($plugin) . 'webroot' . DIRECTORY_SEPARATOR;
+                return $pluginWebroot . $fileFragment;
+            }
+        }
+    }
+
+    /**
      * Attempt to create the filename for the selected resources
      * @param string $what js | css
-     * @throws Exception
      * @return string|bool
      */
     private function filename($what = null) {
-        // not supported?
-        if(!in_array($what, ['css', 'js']))
-            throw new Exception("{$what} not supported");
-
         // no files?
         if(!$this->$what['intern'])
             return false;
@@ -338,14 +346,9 @@ class MinifyHelper extends Helper {
     /**
      * Take individual files and process them based on an algorithm
      * @param string $what js | css
-     * @throws Exception
      * @return string
      */
     private function process($what = null) {
-        // not supported?
-        if(!in_array($what, ['css', 'js']))
-            throw new Exception("{$what} not supported");
-
         // go through each file
         $output = null;
         foreach($this->$what['intern'] as $idx => $file) {
