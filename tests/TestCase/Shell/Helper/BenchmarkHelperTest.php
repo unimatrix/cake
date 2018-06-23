@@ -47,41 +47,41 @@ class BenchmarkHelperTest extends TestCase
         ], $this->stub->messages());
     }
 
-//     public function testTook5Minutes() {
-//         $delay = '+5 minutes 15 seconds';
-//         $now = new Time();
-//         $then = new Time($delay);
+     public function testTook5Minutes() {
+         $delay = '+5 minutes 15 seconds';
+         $now = new Time();
+         $then = new Time($delay);
 
-//         $this->helper->start();
-//         $this->io->out($this->helper->started());
-//         Time::setTestNow($then);
-//         $this->helper->stop();
-//         $this->io->out($this->helper->ended());
-//         $this->io->out($this->helper->output());
+         $this->helper->start();
+         $this->io->out($this->helper->started());
+         Time::setTestNow($then);
+         $this->helper->stop();
+         $this->io->out($this->helper->ended());
+         $this->io->out($this->helper->output());
 
-//         $this->assertSame([
-//             $now->i18nFormat('dd MMMM yyyy, h:mm a'),
-//             $then->i18nFormat('dd MMMM yyyy, h:mm a'),
-//             '5 minutes and 15 seconds'
-//         ], $this->stub->messages());
-//     }
+         $this->assertSame([
+             $now->i18nFormat('dd MMMM yyyy, h:mm a'),
+             $then->i18nFormat('dd MMMM yyyy, h:mm a'),
+             '5 minutes and 15 seconds'
+         ], $this->stub->messages());
+     }
 
-//     public function testTookForever() {
-//         $delay = '+2 days 30 minutes 45 seconds';
-//         $now = new Time();
-//         $then = new Time($delay);
+     public function testTookForever() {
+         $delay = '+2 days 30 minutes 45 seconds';
+         $now = new Time();
+         $then = new Time($delay);
 
-//         $this->helper->start();
-//         $this->io->out($this->helper->started());
-//         Time::setTestNow($then);
-//         $this->helper->stop();
-//         $this->io->out($this->helper->ended());
-//         $this->io->out($this->helper->output());
+         $this->helper->start();
+         $this->io->out($this->helper->started());
+         Time::setTestNow($then);
+         $this->helper->stop();
+         $this->io->out($this->helper->ended());
+         $this->io->out($this->helper->output());
 
-//         $this->assertSame([
-//             $now->i18nFormat('dd MMMM yyyy, h:mm a'),
-//             $then->i18nFormat('dd MMMM yyyy, h:mm a'),
-//             '2 days, 30 minutes and 45 seconds'
-//         ], $this->stub->messages());
-//     }
+         $this->assertSame([
+             $now->i18nFormat('dd MMMM yyyy, h:mm a'),
+             $then->i18nFormat('dd MMMM yyyy, h:mm a'),
+             '2 days, 30 minutes and 45 seconds'
+         ], $this->stub->messages());
+     }
 }
