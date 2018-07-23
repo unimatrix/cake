@@ -2,7 +2,7 @@
 
 namespace Unimatrix\Cake\Database\Type;
 
-use Cake\Database\Driver;
+use Cake\Database\Type\StringType;
 use Cake\Database\Type;
 
 /**
@@ -10,9 +10,9 @@ use Cake\Database\Type;
  * Custom filetype for unimatrix.file
  *
  * @author Flavius
- * @version 1.0
+ * @version 1.1
  */
-class FileType extends Type
+class FileType extends StringType
 {
     /**
      * Marshal
@@ -22,22 +22,12 @@ class FileType extends Type
      * @return mixed
      */
     public function marshal($value) {
-        return $value;
-    }
+        if ($value === null)
+            return null;
 
-    /**
-     * {@inheritDoc}
-     * @see \Cake\Database\Type::toPHP()
-     */
-    public function toPHP($value, Driver $driver) {
-        return $value;
-    }
+        if (is_array($value))
+            return (array)$value;
 
-    /**
-     * {@inheritDoc}
-     * @see \Cake\Database\Type::toDatabase()
-     */
-    public function toDatabase($value, Driver $driver) {
-        return $value;
+        return '';
     }
 }
