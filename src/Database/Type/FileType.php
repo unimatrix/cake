@@ -3,7 +3,6 @@
 namespace Unimatrix\Cake\Database\Type;
 
 use Cake\Database\Type\StringType;
-use Cake\Database\Type;
 
 /**
  * FileType
